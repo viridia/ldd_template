@@ -247,7 +247,10 @@ information.
   Code, `.claude/settings.json`), so they run without a prompt. A leading `cd <dir> &&`, a shell
   variable or an unlisted filter breaks the match. When a session still collects prompts, list which
   calls prompted, grouped by shape, as data for new rules; do not change the settings without
-  asking.
+  asking. Propose a narrowly scoped script to allowlist by its path rather than a rule that allows a
+  powerful tool outright (`python3 *`, `perl *`); `docs/workflow.md` says why. In Claude Code, a
+  rule in `.claude/settings.local.json` takes effect where one in `.claude/settings.json` may not,
+  since the local file has been found to take precedence.
 - **Do not run several file-editing agents in parallel** without asking first. Each opens its own
   diff to approve, the review becomes unmanageable, and the result reads in as many voices as there
   were agents.

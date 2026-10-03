@@ -238,6 +238,25 @@ complexity. It is a check on slop, the steady accretion of words and surface tha
 looks responsible for. A sweep starts and ends with it, so its effect is measured rather than
 asserted.
 
+**Approval prompts are part of the process to maintain.** An agent asks before running anything not
+on its allowlist, and a session that stops for approval every few calls wears the author down until
+approving becomes reflex, which is worse than having no prompts. The tempting fix is to allow a
+powerful tool outright, `python3 *` or `perl *`, and that approves everything those tools can do.
+The practice here is a **trusted script** instead: a script with a deliberately narrow scope, whose
+whole behaviour can be read in a minute, allowlisted by its own path. `scripts/show.py` is one; it
+can only print sections of documents. When a session collects prompts, the agent lists which calls
+prompted, grouped by shape, and the recurring shapes become a trusted script or a narrow allow rule
+as a tooling chunk. Two things keep a script trusted. It changes nothing (reading and reporting
+only), or it changes files only as the formatters do, in a way the author has already agreed to; and
+widening its scope is a reviewed change like any other, not a quiet edit, since the allowlist entry
+vouches for whatever the file comes to contain.
+
+In Claude Code, rules go in `.claude/settings.json`, which is shared through the repository, or
+`.claude/settings.local.json`, which is personal and ignored by git. Where both exist, the local
+file has been found to take precedence: a rule added to the shared file can have no effect on a
+machine with a local one. Add a rule to the local file to have it take effect now, and to the shared
+file when every developer should have it.
+
 ## The tools are a seed
 
 The scripts and tools here are a starting point, and are expected to change. Each one in the project
