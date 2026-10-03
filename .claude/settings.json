@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(scripts/devfmt.py --diff *)",
+      "Bash(scripts/devfmt.py --diff)",
+      "Bash(scripts/devfmt.py --check *)",
+      "Bash(scripts/devfmt.py --preview *)",
+      "Bash(python3 scripts/test_devfmt.py)",
+      "Bash(scripts/verify.sh)",
+      "Bash(scripts/verify.sh *)",
+      "Bash(python3 scripts/xref.py)",
+      "Bash(python3 scripts/xref.py *)",
+      "Bash(scripts/xref.py)",
+      "Bash(scripts/xref.py *)",
+      "Bash(scripts/show.py *)",
+      "Bash(python3 scripts/show.py *)",
+      "Bash(scripts/growth.py)",
+      "Bash(scripts/growth.py *)",
+      "Bash(scripts/mentions.sh *)",
+      "Bash(grep *)",
+      "Bash(tail *)",
+      "Bash(head *)",
+      "Bash(wc *)",
+      "Bash(git diff)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git status)"
+    ]
+  }
+}
