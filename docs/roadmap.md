@@ -10,7 +10,7 @@ explains why the present is as it is, it belongs in [decisions.md](./decisions.m
 built is described in exactly one place, and this is not it. The landed index below names chunks; it
 does not describe the project.
 
-Ground rules, house style and the commit-message convention are in [CLAUDE.md](../CLAUDE.md); they
+Ground rules, house style and the commit-message convention are in [AGENTS.md](../AGENTS.md); they
 are about the work rather than about the project. Ground rule 5 is the one this document is built
 around: nothing outstanding may be left without a destination, which is a chunk here or a gated
 entry in [deferred.md](./deferred.md).

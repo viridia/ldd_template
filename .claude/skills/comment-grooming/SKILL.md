@@ -1,6 +1,6 @@
 ---
 name: comment-grooming
-description: A whole-tree sweep of comments and doc comments for house-style violations and duplicated explanations, using read-only recon subagents to find candidates before editing anything by hand. Expensive; use only when the author asks for a comment sweep, typically after the house style in CLAUDE.md has changed and the tree must be brought into line. Not for routine compliance, which is the per-chunk second pass over changed comments that CLAUDE.md's house style asks for.
+description: A whole-tree sweep of comments and doc comments for house-style violations and duplicated explanations, using read-only recon subagents to find candidates before editing anything by hand. Expensive; use only when the author asks for a comment sweep, typically after the house style in AGENTS.md has changed and the tree must be brought into line. Not for routine compliance, which is the per-chunk second pass over changed comments that AGENTS.md's house style asks for.
 ---
 
 # Comment grooming
@@ -11,11 +11,11 @@ maintainer wrote it, and parallel editing agents destroy exactly that.
 
 ## When to run it
 
-Rarely. Comments stay compliant through the second pass `CLAUDE.md` asks for at the end of each
+Rarely. Comments stay compliant through the second pass `AGENTS.md` asks for at the end of each
 chunk, over the comments that chunk changed; this skill is for the moment that stops being enough,
 when the house style itself has changed and the existing tree predates it. It reads every comment in
 scope, and a whole-tree run through parallel subagents once cost a week's token budget in two days.
-Price it before starting (`CLAUDE.md`'s "Context" section), and prefer scoping it to the files the
+Price it before starting (`AGENTS.md`'s "Context" section), and prefer scoping it to the files the
 change actually affects: the workflow below works the same over one directory as over the tree.
 
 ## What this is not
@@ -118,7 +118,7 @@ internal comments, which may cite; it sizes the work rather than counting violat
 
 ### 2. Group the files
 
-Group by area, not by rule. Reading a file once per rule is the waste `CLAUDE.md` warns about; every
+Group by area, not by rule. Reading a file once per rule is the waste `AGENTS.md` warns about; every
 rule gets applied in one read. Aim for roughly 250 comment lines per group, and keep files that talk
 about each other together.
 
@@ -133,7 +133,7 @@ Use `Explore`, never a general agent — the agents must not be able to edit. Wr
 scratchpad.
 
 The prompt template is in [recon-prompt.md](recon-prompt.md). It is long on purpose: the agent
-starts cold, with no access to the conversation, `CLAUDE.md`, or the dial.
+starts cold, with no access to the conversation, `AGENTS.md`, or the dial.
 
 ### 4. Spot-check before trusting a list
 

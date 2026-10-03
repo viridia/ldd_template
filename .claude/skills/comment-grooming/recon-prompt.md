@@ -1,7 +1,7 @@
 # Recon prompt template
 
 Copy this verbatim into an `Explore` agent, substituting the files for the group. It is long on
-purpose: the agent starts cold, with no access to the conversation, to `CLAUDE.md`, or to the dial.
+purpose: the agent starts cold, with no access to the conversation, to `AGENTS.md`, or to the dial.
 
 Substitute `{{ROOT}}`, `{{LANGUAGE}}` and `{{FILES}}`, and delete this header before sending.
 

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# Runs the verification recipe (CLAUDE.md's "Verification" section) as one command, filtering
+# Runs the verification recipe (AGENTS.md's "Verification" section) as one command, filtering
 # routine output and only widening it for a step that actually failed.
 #
 # A warning counts as a failure here even though a compiler's own exit code ignores it, because
-# CLAUDE.md's convention is that this tree is warning-free.
+# AGENTS.md's convention is that this tree is warning-free.
 #
 # Usage: scripts/verify.sh
 #

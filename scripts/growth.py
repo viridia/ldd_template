@@ -129,11 +129,12 @@ def section(text, heading):
 
 
 def bootstrap(tree):
-    """What a session reads before it starts: CLAUDE.md, the memory index, and the orientation
-    sequence CLAUDE.md gives. The memory index is not versioned, so it is today's on both sides."""
+    """What a session reads before it starts: AGENTS.md, Claude Code's memory index where there is
+    one, and the orientation sequence AGENTS.md gives. The memory index is not versioned, so it is
+    today's on both sides."""
     roadmap = str(ROADMAP.relative_to(ROOT))
     parts = {
-        "CLAUDE.md": words(tree.read("CLAUDE.md")),
+        "AGENTS.md": words(tree.read("AGENTS.md")),
         f"{roadmap}, Where this stands": words(section(tree.read(roadmap), "## Where this stands")),
         "docs/issues.md": words(tree.read("docs/issues.md")),
     }

@@ -5,7 +5,7 @@ which the project's knowledge lives in a set of numbered, single-purpose documen
 reads and maintains alongside the code.
 
 The process is explained in [docs/workflow.md](docs/workflow.md). The agent's own instructions are
-in [CLAUDE.md](CLAUDE.md).
+in [AGENTS.md](AGENTS.md).
 
 This file is a placeholder. Replace it with the project's own README once the project has one; the
 process does not depend on it.

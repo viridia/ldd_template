@@ -1,7 +1,7 @@
 # How this project is run
 
 This document explains, for a person, the process the project is developed under. The agent's
-instructions for the same process are in [CLAUDE.md](../CLAUDE.md); this is the companion that says
+instructions for the same process are in [AGENTS.md](../AGENTS.md); this is the companion that says
 what those instructions are for, and what the human half of the arrangement looks like.
 
 The process grew over several months of building a Rust library with an LLM coding agent writing
@@ -22,7 +22,7 @@ broken in a fourth, and so on. The agent reads two or three of them to orient, f
 by its number, and updates them in the same commit as the code. The rest of the process exists to
 keep those ledgers true.
 
-This is meta-prompting with structure. `CLAUDE.md` is the standing prompt; the ledgers are the
+This is meta-prompting with structure. `AGENTS.md` is the standing prompt; the ledgers are the
 context it points into; and the corrections the author makes along the way are written back into
 both, so the next session starts from a better prompt than this one did.
 
@@ -50,7 +50,7 @@ Two rules make them work.
 
 **Each fact has one home.** What has been built is described in `design.md` and nowhere else; the
 roadmap names chunks but does not describe the project; a decision says why but not how. Each ledger
-states the test that decides what it admits, and `CLAUDE.md` collects the tests in one table. A
+states the test that decides what it admits, and `AGENTS.md` collects the tests in one table. A
 second description is the regression to watch for, because two descriptions drift and then the agent
 is confidently wrong about whichever one it read.
 
@@ -173,7 +173,7 @@ in two days, where an inline pass over one document cost about one percent.
 style much better when its attention is on the comment text alone than when it is writing code and
 documenting it at once. It also tends to think in chain-of-reasoning prose, which is part of how it
 works and belongs in the conversation, but leaks into comments despite the rules against it: what
-was considered, what was tried, why the obvious approach would not work. `CLAUDE.md` asks for a
+was considered, what was tried, why the obvious approach would not work. `AGENTS.md` asks for a
 second pass over a chunk's new and changed comments before it is handed over. If one is skipped, ask
 for it; it costs little, because it reads only the diff. This per-chunk pass is what keeps the tree
 compliant; the whole-tree `comment-grooming` sweep is for the rare occasion when the rules
@@ -208,18 +208,18 @@ or record the unease in `issues.md` with what prompted it. The guidelines are a 
 articulation, not a substitute for the noticing.
 
 **Write every correction down.** A correction made twice belongs in `guidelines.md`, with the case
-that produced it. A correction about prose belongs in `CLAUDE.md`'s house style. Otherwise the next
+that produced it. A correction about prose belongs in `AGENTS.md`'s house style. Otherwise the next
 session makes the same mistake, because the next session is a stranger.
 
 **Say when the problem is too big.** An agent working on a change larger than it can hold in view at
-once produces confident work with holes in it. `CLAUDE.md` asks it to say so and propose a split;
+once produces confident work with holes in it. `AGENTS.md` asks it to say so and propose a split;
 the author should welcome that rather than push through.
 
 ## Sharpening the saw
 
 A meaningful share of the time on the project goes to the process itself rather than to features:
 editing the ledgers for clarity, merging duplicated explanations, retiring stale entries, improving
-the tools, and tightening `CLAUDE.md`. This is deliberate. The ledgers decay as the code moves, and
+the tools, and tightening `AGENTS.md`. This is deliberate. The ledgers decay as the code moves, and
 an agent reasoning from a stale document does worse work than one with no document at all.
 
 The roadmap has two standing groups for it. **Sweeps** pass over a whole document or module a unit
@@ -242,7 +242,7 @@ asserted.
 
 The scripts and tools here are a starting point, and are expected to change. Each one in the project
 this came from began as a lookup, a check or a tally that kept being done by hand, until it was
-worth a chunk to automate. `CLAUDE.md` asks the agent to notice that and propose one.
+worth a chunk to automate. `AGENTS.md` asks the agent to notice that and propose one.
 
 | Tool | Does | How it is expected to grow |
 | --- | --- | --- |
@@ -279,9 +279,25 @@ because:
 - **A database is opaque to review.** Its changes do not show in a diff, and reading it costs a tool
   call per question.
 
+## Which agent
+
+The process was developed with Claude Code, but nearly all of it is Markdown and plain scripts, and
+works with any agent that can read files and run commands. The agent's instructions are in
+`AGENTS.md`, the name most coding agents read by convention; `CLAUDE.md` is a one-line file that
+imports it for Claude Code.
+
+What is specific to Claude Code is under `.claude/`: the permission allowlist in `settings.json`,
+and the `comment-grooming` skill, whose procedure is plain Markdown that another agent can be
+pointed at, with its read-only subagents run in whatever form that agent offers, or one after
+another. `scripts/growth.py` counts Claude Code's memory index in a session's starting reading, and
+skips it where there is none.
+
+The house style's list of tells was compiled by correcting Claude, and another model will have
+habits of its own. The process's answer is the same: when a correction recurs, write it down.
+
 ## Adopting it
 
-1. Fill in the placeholders in `CLAUDE.md`, marked as HTML comments: what the project is, its commit
+1. Fill in the placeholders in `AGENTS.md`, marked as HTML comments: what the project is, its commit
    convention, and its verification recipe.
 2. Write `requirements.md` before much code, as "Writing the requirements" above describes, with the
    surveys in `sources/`. It is the document the rest cite most.
