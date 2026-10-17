@@ -12,8 +12,8 @@ effectively all of the code to one experienced engineer's direction. Its example
 ## The idea
 
 An agent starts every session knowing nothing about the project. Whatever it needs to know has to be
-written down, and it has to be findable in a few cheap steps, because every word the agent reads is
-taken from a fixed budget that also has to hold the work.
+written down, and it has to be findable in a few cheap steps, because every word the agent reads
+takes space in its context window, which also has to hold the work.
 
 So the project's knowledge lives in **ledgers**: Markdown files in the repository, each admitting
 exactly one kind of thing, with every entry numbered so it can be cited and looked up. What the
@@ -31,6 +31,26 @@ code, its tests and the documentation it forces, landing as a single commit or b
 planned as a numbered section of the roadmap before it is built, and that number stays with it in
 commit messages and code comments after it lands. One session builds one chunk. A chunk too large
 for that is split into lettered parts (`12a`, `12b`) before it is written.
+
+Saving tokens is a side benefit. The ledgers exist to carry what one session learned to the next,
+and to keep each change small enough to review, which pays off over a project that lasts whatever
+its token allowance. A game jam, or a prototype that will be thrown away, gains much less.
+
+## What it needs
+
+An agent that works in the repository: one that reads and edits files and runs commands, showing
+each edit as a diff to approve. A chat window without access to the repository cannot run the
+process, since the person would have to carry every file in and every edit out by hand. "Which
+agent" below covers what is specific to Claude Code.
+
+No session holds the ledgers whole. It reads a fixed bootstrap and fetches the rest by number. In
+this template the bootstrap is about 4,400 words, roughly 6,000 tokens, most of it `AGENTS.md`, and
+it grows with `issues.md`; `scripts/growth.py` reports the current figure. The agent's own system
+prompt and the chunk's work come on top, so a context window of 32k tokens is tight and 8k is too
+small.
+
+The harder demand is judgement: deciding which ledger a sentence belongs in, declining to pad, and
+pushing back on a bad request. Smaller models are weakest at these, and the process depends on them.
 
 ## The ledgers
 
