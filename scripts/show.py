@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Print sections of the documents, found by their anchors.
 
-    scripts/show.py <n>       a roadmap chunk, by its number
+    scripts/show.py C3        a chunk of docs/roadmap.md
     scripts/show.py TD8.4     a section of docs/design.md
     scripts/show.py R4.2      a requirement, with its sub-bullets
     scripts/show.py R4        a section of docs/requirements.md
@@ -22,9 +22,13 @@ import re
 import sys
 
 from xref import (
+    CHUNK,
+    CHUNK_DEF,
+    CHUNK_ID,
     DESIGN,
     H2_NUM,
     H3_NUM,
+    LANDED_ROW,
     LEDGERS,
     R_DEF,
     REQUIREMENTS,
@@ -34,9 +38,7 @@ from xref import (
     prose,
 )
 
-CHUNK_DEF = re.compile(r"^### (\d+[a-z]?)\.")
-LETTERED = re.compile(r"(\d+)[a-z]")
-LANDED_ROW = re.compile(r"^\| (\d+[a-z]?) +\|")
+LETTERED = re.compile(rf"({CHUNK}\d+)[a-z]")
 HEADING = re.compile(r"^(#+) ")
 OUTLINE_WIDTH = 100
 
@@ -46,7 +48,7 @@ KINDS = [
     (re.compile(r"R\d+"), REQUIREMENTS, [H2_NUM], "R"),
     (re.compile(r"TD\d+(?:\.\d+)?"), DESIGN, [H2_NUM, H3_NUM], "TD"),
     *((re.compile(rf"{prefix}\d+"), path, [entry_def(prefix)], "") for prefix, path, _ in LEDGERS),
-    (re.compile(r"\d+[a-z]?"), ROADMAP, [CHUNK_DEF], ""),
+    (re.compile(CHUNK_ID), ROADMAP, [CHUNK_DEF], ""),
 ]
 
 TOC = {
@@ -143,7 +145,7 @@ def main():
             continue
         found = find(anchor)
         if found is None and landed(anchor):
-            print(f"{anchor}: landed; see git log --grep 'chunk {anchor})'", file=sys.stderr)
+            print(f"{anchor}: landed; see git log --grep '({anchor})'", file=sys.stderr)
             status = 1
             continue
         # A sweep unit is lettered as it lands, under its sweep's section.

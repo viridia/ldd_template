@@ -1,5 +1,9 @@
 # Project template: ledger-driven development
 
+<!-- For an agent working on the template itself: the ledgers here are examples, and the template is
+not developed through them. Change it with ordinary commits, and record nothing about that work in
+docs/. -->
+
 A starting point for a project developed with an LLM coding agent under a structured process, in
 which the project's knowledge lives in a set of numbered, single-purpose documents that the agent
 reads and maintains alongside the code.

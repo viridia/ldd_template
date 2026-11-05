@@ -18,9 +18,9 @@ a session is going to take on a second chunk, say so rather than continuing sile
 ## The documents, and when to open one
 
 Every section is numbered, so a known target is one command away: `scripts/show.py <anchor>...`
-prints it, given a chunk number or an `I`, `TD`, `D`, `X`, `G` or `R` anchor, and takes several at
-once. `--outline` prints only the headings and requirements inside, with line numbers, for a section
-too long to read whole; `--toc TD` (or `R`, `D`, `X`, `G`, `I`, `chunks`) lists every heading of one
+prints it, given a `C`, `I`, `TD`, `D`, `X`, `G` or `R` anchor, and takes several at once.
+`--outline` prints only the headings and requirements inside, with line numbers, for a section too
+long to read whole; `--toc TD` (or `R`, `D`, `X`, `G`, `I`, `chunks`) lists every heading of one
 document, to find a section before its anchor is known. Use that for lookups; see "Context" below
 for when not to.
 
@@ -40,8 +40,7 @@ for when not to.
 Each numbered document has its own prefix, so a reference never needs to know which document it is
 standing in. `docs/requirements.md`'s sections are `R<n>`, told from the requirements inside them by
 the dot: `R<s>` is the section, `R<s>.<n>` a requirement in it. `docs/design.md`'s are `TD<n>`, with
-subsections `TD<n>.<m>`. Chunks alone are bare numbers, because commit messages and code comments
-cite them.
+subsections `TD<n>.<m>`. Chunks, in `docs/roadmap.md`, are `C<n>`.
 
 A requirement is defined once, as a list item reading `- **R<section>.<n> (MUST)**` followed by its
 `_(from: …)_` provenance tag, and is cited bare everywhere else, so `**` followed by the number
@@ -223,8 +222,8 @@ LLM Usage Disclosure: implementation, tests and documentation written by
 
 Name the model that actually did the session's work, not whichever one wrote the last commit. -->
 
-A commit for a chunk names it, as "(chunk 12)" in the subject, so `git log --grep 'chunk 12)'` finds
-it once its section is gone from the roadmap. When a chunk lands as more than one commit, give the
+A commit for a chunk names it, as `(C<n>)` in the subject, so `git log --grep '(C<n>)'` finds it
+once its section is gone from the roadmap. When a chunk lands as more than one commit, give the
 exact `git add` and `git restore --staged` commands beside each message; a partly staged index does
 not reliably survive until the author commits.
 

@@ -12,7 +12,8 @@ reports every reference that points nowhere.
 
 Each numbered document owns a prefix, so a reference resolves without knowing where it is written:
 `R4` is a section of `docs/requirements.md` and `R4.2` a requirement inside it, `TD5.3` a subsection
-of `docs/design.md`, `X12` an entry in `docs/deferred.md`, `I7` one in `docs/issues.md`.
+of `docs/design.md`, `X12` an entry in `docs/deferred.md`, `I7` one in `docs/issues.md`, `C3` a chunk
+in `docs/roadmap.md`, open or landed.
 
 A document whose entries are numbered from a counter carries its `**Next: <n>.**` line, and the
 counter must exceed every number the document has ever used, read from its git history as well as
@@ -49,8 +50,12 @@ LEDGERS = [
     ("I", DOCS / "issues.md", True),
 ]
 
+# A chunk's id is this prefix and its number. Projects sharing a workspace pick distinct prefixes, so
+# that an id in a commit log says whose it is.
+CHUNK = "C"
+
 # Source files whose comments cite anchors, as (directory, glob). Empty until the project has
-# source. A short prefix can collide with an identifier (`X11`, `D3D`), so check the first run's
+# source. A short prefix can collide with an identifier (`X11`, `C99`), so check the first run's
 # failures for false hits before trusting a clean one.
 CODE = [
     # ("src", "*.cpp"),
@@ -74,8 +79,18 @@ TD_SECTION = re.compile(r"\bTD(\d+(?:\.\d+)?)\b")
 H2_NUM = re.compile(r"^## (\d+)\.")
 H3_NUM = re.compile(r"^### (\d+\.\d+)\b")
 NEXT = re.compile(r"^\*\*Next: (\d+)\.\*\*")
+# Another project's anchor, as in "Panoply's X3", which this repo's documents cannot resolve.
+FOREIGN = re.compile(r"'s `?[A-Z]+\d+(?:\.\d+)?[a-z]?\b")
+CHUNK_ID = rf"{CHUNK}\d+[a-z]?"
+CHUNK_DEF = re.compile(rf"^### ({CHUNK_ID})\.")
+LANDED_ROW = re.compile(rf"^\| ({CHUNK_ID}) +\|")
+CHUNK_CITE = re.compile(rf"\b{CHUNK_ID}\b")
 # A chunk is spent by its roadmap heading, and its number is never reissued after it lands.
-CHUNK_DEF = re.compile(r"^### (\d+)[a-z]?\.")
+CHUNK_NUMBER = re.compile(rf"^### {CHUNK}(\d+)[a-z]?\.")
+
+
+def chunk_parent(chunk):
+    return chunk.rstrip("abcdefghijklmnopqrstuvwxyz")
 
 
 def entry_def(prefix):
@@ -162,10 +177,17 @@ def main():
         (prefix, path, entry_cite(prefix), headings(path, entry_def(prefix)))
         for prefix, path, _ in LEDGERS
     ]
+    # A sweep's units are lettered as they land, with no heading or row of their own to resolve to.
+    chunks = {
+        chunk_parent(chunk)
+        for pattern in (CHUNK_DEF, LANDED_ROW)
+        for chunk in headings(ROADMAP, pattern)
+    }
 
     for path in md + code:
         is_req = path == REQUIREMENTS
         for n, line in prose(path):
+            line = FOREIGN.sub("", line)
             defines_here = is_req and R_DEF.match(line)
 
             for m in R_CITE.finditer(line):
@@ -184,6 +206,10 @@ def main():
                 for m in cite.finditer(line):
                     if m.group() not in defined:
                         fail(path, n, f"{m.group()} has no entry in {ledger.relative_to(ROOT)}")
+
+            for m in CHUNK_CITE.finditer(line):
+                if chunk_parent(m.group()) not in chunks:
+                    fail(path, n, f"{m.group()} has no section or landed row in docs/roadmap.md")
 
             for m in R_STAR.finditer(line):
                 if not R_DEF.match(line):
@@ -205,7 +231,7 @@ def main():
         fail(path, n, f"{rid} is defined more than once")
 
     counted = [(path, re.compile(rf"^### {prefix}(\d+)\b")) for prefix, path, c in LEDGERS if c]
-    counted.append((ROADMAP, CHUNK_DEF))
+    counted.append((ROADMAP, CHUNK_NUMBER))
     for path, pattern in counted:
         counter = next(
             ((n, int(m.group(1))) for n, l in prose(path) for m in [NEXT.match(l)] if m), None

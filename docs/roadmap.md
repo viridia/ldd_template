@@ -15,7 +15,7 @@ are about the work rather than about the project. Ground rule 5 is the one this 
 around: nothing outstanding may be left without a destination, which is a chunk here or a gated
 entry in [deferred.md](./deferred.md).
 
-**How a chunk is written.** A `###` heading reading `### <n>. <title> · E[<level>]`, the level from
+**How a chunk is written.** A `###` heading reading `### C<n>. <title> · E[<level>]`, the level from
 G7. Its body says what changes, in sentences that assume nothing, then bullets: the decisions the
 chunk makes or leaves to itself, **Not doing:** for what it deliberately omits (ground rule 4), and
 **Verified by:** for how it will be shown to work (ground rule 2). A requirement below `MUST` is
@@ -24,8 +24,8 @@ chunk that takes on an issue carries what the issue knew, and the issue leaves
 [issues.md](./issues.md); references to it are rewritten to the chunk.
 
 **Numbering.** A chunk's number is a permanent identity, taken from the counter below and never
-reused; its position in the sequence is separate and changes freely. Lettered parts (`12a`, `12b`)
-share their parent's number.
+reused; its position in the sequence is separate and changes freely. Lettered parts (`C<n>a`,
+`C<n>b`) share their parent's number.
 
 **Next: 1.**
 

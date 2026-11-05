@@ -24,10 +24,10 @@ Comments divide by **who reads them**, which is not the same as which marker the
   vocabulary freely.
 - **Documentation on public items** is for someone using the code. Pedagogy rules: explain the
   concept, show the usage, say why it matters. It must NEVER cite a requirement number (R4.2), a
-  design section (TD5.3), a decision (D22), an issue (I7), or a development chunk ("chunk 88") —
-  wherever the documentation is published, those documents do not exist. It must also not explain
-  *how the item is implemented*; that describes an internal choice to someone who cannot see it and
-  freezes it into the public documentation.
+  design section (TD5.3), a decision (D22), an issue (I7), or a development chunk (C88) — wherever
+  the documentation is published, those documents do not exist. It must also not explain *how the
+  item is implemented*; that describes an internal choice to someone who cannot see it and freezes
+  it into the public documentation.
 
 **Check visibility before reporting a doc-comment violation.** Documentation on a private function
 is maintainer-facing and is governed by the first bullet, not the second.
