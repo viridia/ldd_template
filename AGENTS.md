@@ -57,8 +57,8 @@ identities, not positions.
 
 - **The author commits.** Never run `git commit` or `git push`. Produce the commit message as text
   in your reply and stop there.
-- **A landed chunk** gets a row in `docs/roadmap.md`'s "What has landed" index, and its `###`
-  section deleted from the sequence. What it taught, if durable, becomes an entry in
+- **A landed chunk** has its `###` section deleted from the sequence, and its commit, which names
+  it, is the record that it landed. What it taught, if durable, becomes an entry in
   `docs/decisions.md`.
 - **Ground rule 5 is the one that bites:** nothing outstanding may be left without a destination. An
   item with no chunk number is an item that will be dropped. "Later" and "its own decision" are not

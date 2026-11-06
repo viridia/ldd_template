@@ -7,8 +7,7 @@ before it has been read.
 **What this document admits.** Work not done, and gaps. The test is whether an entry names something
 that will change; if it describes the present, it belongs in [design.md](./design.md), and if it
 explains why the present is as it is, it belongs in [decisions.md](./decisions.md). What has been
-built is described in exactly one place, and this is not it. The landed index below names chunks; it
-does not describe the project.
+built is described in exactly one place, and this is not it.
 
 Ground rules, house style and the commit-message convention are in [AGENTS.md](../AGENTS.md); they
 are about the work rather than about the project. Ground rule 5 is the one this document is built
@@ -25,7 +24,8 @@ chunk that takes on an issue carries what the issue knew, and the issue leaves
 
 **Numbering.** A chunk's number is a permanent identity, taken from the counter below and never
 reused; its position in the sequence is separate and changes freely. Lettered parts (`C<n>a`,
-`C<n>b`) share their parent's number.
+`C<n>b`) share their parent's number. A chunk's section is deleted when it lands, and the commit
+that names it is the record that it landed.
 
 **Next: 1.**
 
@@ -39,16 +39,6 @@ now, each with the gate that reopens it. The chunks below are the rest of the de
 
 <!-- Fill in: the target the sequence aims at — the first thing someone could run and judge — and
 why it is a better acceptance test than a synthetic one. -->
-
----
-
-## What has landed
-
-An index, not a description. Chunk numbers are stable identities cited in commit messages and in
-code comments, so the sequence stays recoverable; what each chunk delivered is in git.
-
-| #   | Chunk |
-| --- | ----- |
 
 ---
 

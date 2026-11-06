@@ -56,7 +56,7 @@ pushing back on a bad request. Smaller models are weakest at these, and the proc
 
 | Ledger | Holds | Numbered |
 | --- | --- | --- |
-| [roadmap.md](./roadmap.md) | work not done, as a sequence of chunks, and an index of what has landed | chunks, `C<n>` |
+| [roadmap.md](./roadmap.md) | work not done, as a sequence of chunks | chunks, `C<n>` |
 | [requirements.md](./requirements.md) | what must be true, and nothing about why | `R<s>.<n>` |
 | [design.md](./design.md) | how it works now, in the present tense, and nothing about why | `TD<n>.<m>` |
 | [decisions.md](./decisions.md) | why, for choices expensive to reverse, with the cost of reversing | `D<n>` |
@@ -78,7 +78,7 @@ is confidently wrong about whichever one it read.
 always has a place:
 
 ```
-  a finding ──▶ issues.md ──┬──▶ a chunk in roadmap.md ──▶ lands ──▶ a row in the landed index,
+  a finding ──▶ issues.md ──┬──▶ a chunk in roadmap.md ──▶ lands ──▶ a commit that names it,
                             │                                         and a decision if it taught one
                             ├──▶ deferred.md, with a gate ──▶ the gate fires ──▶ a chunk
                             ├──▶ decisions.md
@@ -152,10 +152,10 @@ One session works one chunk, and ends at a commit.
 3. **Build**, with tests, and verify with `scripts/verify.sh`.
 4. **Review the comments**, in a separate pass over every comment the chunk added or changed (see
    "Working with the agent").
-5. **Update the ledgers.** The chunk's roadmap section is deleted and a row added to the landed
-   index. Design changes go into `design.md`; anything durable it taught goes into `decisions.md`;
-   anything it found and did not fix goes into `issues.md`; anything it leaves undone is written
-   onto the chunk that will finish it.
+5. **Update the ledgers.** The chunk's roadmap section is deleted, since the commit that names it
+   records that it landed. Design changes go into `design.md`; anything durable it taught goes into
+   `decisions.md`; anything it found and did not fix goes into `issues.md`; anything it leaves
+   undone is written onto the chunk that will finish it.
 6. **Commit.** The agent writes the commit message; the author reviews and commits. The agent never
    commits or pushes, and never posts anything publicly.
 
@@ -338,7 +338,8 @@ habits of its own. The process's answer is the same: when a correction recurs, w
 
 An existing project can adopt this too: point an agent at this repository, ask it to incorporate the
 structure, and tailor whatever does not fit. In a workspace shared with other projects, give each
-its own chunk prefix, set by `CHUNK` in `scripts/xref.py`.
+its own chunk prefix, set by `CHUNK` in `scripts/xref.py`. A changelog, once the project has users,
+is written for them; it is not an index of chunks, which their commits already provide.
 
 1. Fill in the placeholders in `AGENTS.md`, marked as HTML comments: what the project is, its commit
    convention, and its verification recipe.

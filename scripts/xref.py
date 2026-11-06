@@ -83,7 +83,6 @@ NEXT = re.compile(r"^\*\*Next: (\d+)\.\*\*")
 FOREIGN = re.compile(r"'s `?[A-Z]+\d+(?:\.\d+)?[a-z]?\b")
 CHUNK_ID = rf"{CHUNK}\d+[a-z]?"
 CHUNK_DEF = re.compile(rf"^### ({CHUNK_ID})\.")
-LANDED_ROW = re.compile(rf"^\| ({CHUNK_ID}) +\|")
 CHUNK_CITE = re.compile(rf"\b{CHUNK_ID}\b")
 # A chunk is spent by its roadmap heading, and its number is never reissued after it lands.
 CHUNK_NUMBER = re.compile(rf"^### {CHUNK}(\d+)[a-z]?\.")
@@ -122,8 +121,8 @@ def headings(path, pattern):
     return {m.group(1) for _, l in prose(path) for m in [pattern.match(l)] if m}
 
 
-def highest_ever(path, pattern):
-    """The highest number `pattern` has matched in `path`, in the working tree or any commit."""
+def heading_history(path):
+    """`path`'s lines in the working tree, and every `###` heading any commit added or removed."""
     lines = path.read_text(encoding="utf-8").split("\n")
     log = subprocess.run(
         ["git", "log", "-p", "--format=", "--", str(path.relative_to(ROOT))],
@@ -133,7 +132,18 @@ def highest_ever(path, pattern):
     )
     # A diff line carries a one-character prefix, so the heading starts at column 1.
     lines += [l[1:] for l in log.stdout.split("\n") if l[:1] in "+- " and l[1:4] == "###"]
+    return lines
+
+
+def highest_ever(path, pattern):
+    """The highest number `pattern` has matched in `path`, in the working tree or any commit."""
+    lines = heading_history(path)
     return max((int(m.group(1)) for l in lines for m in [pattern.match(l)] if m), default=0)
+
+
+def chunks_ever():
+    """Every chunk the roadmap has given a section, open, landed or dropped."""
+    return {m.group(1) for l in heading_history(ROADMAP) for m in [CHUNK_DEF.match(l)] if m}
 
 
 def main():
@@ -177,12 +187,9 @@ def main():
         (prefix, path, entry_cite(prefix), headings(path, entry_def(prefix)))
         for prefix, path, _ in LEDGERS
     ]
-    # A sweep's units are lettered as they land, with no heading or row of their own to resolve to.
-    chunks = {
-        chunk_parent(chunk)
-        for pattern in (CHUNK_DEF, LANDED_ROW)
-        for chunk in headings(ROADMAP, pattern)
-    }
+    # A section is deleted when its chunk lands, so a chunk resolves once it has ever had one. A
+    # sweep's units are lettered as they land, with no heading of their own to resolve to.
+    chunks = {chunk_parent(chunk) for chunk in chunks_ever()}
 
     for path in md + code:
         is_req = path == REQUIREMENTS
@@ -209,7 +216,7 @@ def main():
 
             for m in CHUNK_CITE.finditer(line):
                 if chunk_parent(m.group()) not in chunks:
-                    fail(path, n, f"{m.group()} has no section or landed row in docs/roadmap.md")
+                    fail(path, n, f"{m.group()} has never had a section in docs/roadmap.md")
 
             for m in R_STAR.finditer(line):
                 if not R_DEF.match(line):

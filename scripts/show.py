@@ -19,6 +19,7 @@ is reported as absent. Any unknown anchor exits 1, after the others are printed.
 """
 
 import re
+import subprocess
 import sys
 
 from xref import (
@@ -28,12 +29,12 @@ from xref import (
     DESIGN,
     H2_NUM,
     H3_NUM,
-    LANDED_ROW,
     LEDGERS,
     R_DEF,
     REQUIREMENTS,
     ROADMAP,
     ROOT,
+    chunks_ever,
     entry_def,
     prose,
 )
@@ -105,8 +106,14 @@ def find(anchor):
     return None
 
 
-def landed(anchor):
-    return any(m and m.group(1) == anchor for _, l in prose(ROADMAP) for m in [LANDED_ROW.match(l)])
+def commits_naming(anchor):
+    log = subprocess.run(
+        ["git", "log", "--format=%h", "--fixed-strings", f"--grep=({anchor})"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+    return log.stdout.split()
 
 
 def outline(path, start, end):
@@ -144,8 +151,12 @@ def main():
                 status = 1
             continue
         found = find(anchor)
-        if found is None and landed(anchor):
-            print(f"{anchor}: landed; see git log --grep '({anchor})'", file=sys.stderr)
+        if found is None and anchor in chunks_ever():
+            if commits_naming(anchor):
+                print(f"{anchor}: landed; see git log -F --grep '({anchor})'", file=sys.stderr)
+            else:
+                # Landing but not yet committed, or dropped from the roadmap.
+                print(f"{anchor}: off the roadmap, and no commit names it", file=sys.stderr)
             status = 1
             continue
         # A sweep unit is lettered as it lands, under its sweep's section.
