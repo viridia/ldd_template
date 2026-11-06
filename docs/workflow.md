@@ -63,7 +63,6 @@ pushing back on a bad request. Smaller models are weakest at these, and the proc
 | [issues.md](./issues.md) | findings nobody has decided about yet, tiered by severity | `I<n>` |
 | [deferred.md](./deferred.md) | work decided against for now, each with the event that reopens it | `X<n>` |
 | [guidelines.md](./guidelines.md) | judgement a maintainer would otherwise learn by being corrected | `G<n>` |
-| [architecture.md](./architecture.md) | a diagram-led tour for a newcomer, refreshed in batches | unnumbered |
 | [sources/](./sources/README.md) | the surveys the requirements were drawn from, a record rather than a ledger | by file name |
 
 Two rules make them work.

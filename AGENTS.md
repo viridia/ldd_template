@@ -34,7 +34,6 @@ for when not to.
 | `docs/issues.md` | findings awaiting routing, in entries `I<n>`, tiered by severity | a finding needs routing, or you are about to re-find one |
 | `docs/deferred.md` | work decided against for now, in entries `X<n>`, each with its gate | a gate may have fired, or you are about to defer something |
 | `docs/guidelines.md` | how this project judges scope and shapes code, in entries `G<n>` | you are about to scope a chunk or write code |
-| `docs/architecture.md` | a diagram-led tour for a new maintainer, unnumbered | you are new to the project, or a diagram would settle a question faster than prose |
 | `docs/workflow.md` | this process, explained for a human | a person asks how the project is run |
 
 Each numbered document has its own prefix, so a reference never needs to know which document it is
@@ -104,7 +103,6 @@ Each document admits one kind of thing, and the test is what distinguishes them.
 | Document | Admits | The test |
 | --- | --- | --- |
 | `docs/design.md` | mechanism, present tense | Would this still be true after the reason for it is forgotten? |
-| `docs/architecture.md` | the shape of the mechanism, taught | Does it help a newcomer build a mental model? A signature, a variant list or an edge case belongs in `design.md`, linked by `TD` section. |
 | `docs/decisions.md` | decisions expensive to reverse | Name what breaks if it is reversed. If you cannot, it is a code comment. |
 | `docs/requirements.md` | normative statements | Can it be violated? If nothing could violate it, it is design. |
 | `docs/sources/` | research, as it was believed when the requirements were drafted | Did a requirement rest on it? Findings are corrected with a dated note, never rewritten. |
@@ -115,10 +113,7 @@ Each document admits one kind of thing, and the test is what distinguishes them.
 | `AGENTS.md` | process | Is it about the work rather than about the project? |
 
 **What has been built is described in exactly one place, `docs/design.md`.** A second description
-anywhere is the regression to watch for. `docs/architecture.md` is the one sanctioned companion: it
-teaches the shape in diagrams, defers every detail to a `TD` section, and does not argue. It is a
-frozen snapshot, refreshed in batches: a chunk does not update it, even when it changes a flow it
-draws.
+anywhere is the regression to watch for.
 
 ## House style
 
